@@ -4,10 +4,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Belleful.com/login</title>
-        <link rel="stylesheet" href="../../Styles/general.css">
+        <link rel="stylesheet" href="general.css">
 
         <?php 
-            include '../../Services/connection.php';
+            include '../Services/connection.php';
             $con = openCon();
 
             //mysqli_close($con);
@@ -15,7 +15,7 @@
         ?>
     </head>
     <body>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="f">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="login-form">
             <h2>Login</h2>
             <div class="input-container">
                 <label for="email">Email</label>
@@ -27,7 +27,7 @@
                 <input type="password" id="password" name="password">
             </div>
 
-            <p>Don't have an account yet? <a href="../Signup/signup.php">Sign Up now</a></p>
+            <p>Don't have an account yet? <a href="./signup.php">Sign Up now</a></p>
 
             <div class="btn">
                 <button type="submit" class="login-btn">Login</button>
@@ -78,20 +78,20 @@
                         try {
                             // Your authentication logic here
                             $con = openCon();
-                            $query = "SELECT password FROM users WHERE email = ?";
+                            $query = "SELECT password FROM users_list WHERE email = ?";
                             $stmt = mysqli_prepare($con, $query);
                             mysqli_stmt_bind_param($stmt, "s", $email);
                             mysqli_stmt_execute($stmt);
                             mysqli_stmt_store_result($stmt);
                     
                             if (mysqli_stmt_num_rows($stmt) > 0) {
-                                mysqli_stmt_bind_result($stmt, $hashed_password);
+                                mysqli_stmt_bind_result($stmt, $password);
                                 mysqli_stmt_fetch($stmt);
                     
                                 // Compare passwords securely
-                                if ($hashed_password == $password) {
+                                if ($password == $password) {
                                     // Redirect to dashboard upon successful authentication
-                                    header("location: ../Dashboard/dashboard.php");
+                                    header("location: ./products.php");
                                     die;
                                 } else {
                                     $error = "Invalid email or password.";

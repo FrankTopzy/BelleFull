@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Belleful.com/signup</title>
-  <link rel="stylesheet" href="../../Styles/general.css">
+  <link rel="stylesheet" href="general.css">
 
   <?php 
-    include '../../Services/connection.php';
+    include '../Services/connection.php';
     //$con = openCon();
     //mysqli_close($con);
     //closeCon($con); 
@@ -15,7 +15,7 @@
 
 </head>
 <body>
-  <form action="" method="POST">
+  <form action="" method="POST" class="login-form">
     <h2>Sign Up</h2>
 
     <div class="input-container">
@@ -33,7 +33,7 @@
       <input type="password" id="password" name="password">
     </div>
 
-    <p>Already have an account? <a href="../Login/login.php">Login now</a></p>
+    <p>Already have an account? <a href="login.php">Login now</a></p>
 
     <div class="btn">
       <button type="submit" class="signup-btn" name="signup">Sign Up</button>
@@ -53,14 +53,14 @@
               $password = password_hash($password, PASSWORD_DEFAULT);
 
             
-              $sql = "INSERT INTO `users`(`fullname`, `email`, `password`) VALUES ('$fullname','$email','$password')";
+              $sql = "INSERT INTO `users_list`(`fullname`, `email`, `password`) VALUES ('$fullname','$email','$password')";
 
               $con = openCon();
 
               try {
                 if (mysqli_query($con, $sql)/*$con->query($sql) === TRUE*/) {
                   echo "Record inserted successfully";
-                  header("Location: ../Login/login.php");
+                  header("Location: ./login.php");
                   exit();
                 } else {
                     echo "Could not insert record: " . $con->error;
