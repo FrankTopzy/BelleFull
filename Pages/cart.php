@@ -123,16 +123,16 @@
                 <div class="checkout">
                     <h2>Cart Totals</h2>
 
-                    <p>Subtotal: <span>₦ <?= number_format($total, 2) ?></span></p>
-                    <p>Shippin fee: <span>₦ <?= number_format($shippinFee, 2) ?></span></p>
-                    <p>Sales Tax: <span>₦ <?= number_format($tax, 2) ?></span></p>
+                    <form action="">
+                      <p>Subtotal: <span>₦ <?= number_format($total, 2) ?></span></p>
+                      <p>Shippin fee: <span>₦ <?= number_format($shippinFee, 2) ?></span></p>
+                      <p>Sales Tax: <span>₦ <?= number_format($tax, 2) ?></span></p>
 
-                    <hr>
+                      <hr>
 
-                    <p>Total: <span>₦ <?= number_format($totalFinal, 2) ?></span></p>
-                    <button><img src="../assets/checkout.png" alt="">Begin Checkout </button>
-
-
+                      <p id="total-payment">Total: <span>₦ <?= $totalFinal ?>.00</span></p>
+                      <button id="pay-btn"><img src="../assets/checkout.png" alt="">Make Payment</button>
+                    </form>
                 </div>
                 <?php
                         else:
@@ -169,6 +169,37 @@
       </div>
   </div>
     
+<script src="https://js.paystack.co/v2/inline.js"></script>
+<script>
+  const payBtn = document.querySelector("#pay-btn");
+  const totalPayment = document.querySelector("#total-payment");
+  const amount = totalPayment.textContent.split(' ')[2];
+  console.log(amount)
+  
+  payBtn.addEventListener('click', payWithPaystack);
 
+  function payWithPaystack(e) {
+    e.preventDefault();
+
+    const paystack = new PaystackPop();
+    paystack.newTransaction({
+      key: 'pk_test_121ab5224a448cb4e14fa0f424ea80b7bb996427',
+      email: 'customer@example.com',
+      amount: Number(amount) * 100,
+      onSuccess: (transaction) => {
+        console.log('Payment successful:', transaction);
+        // Your success logic here
+      },
+      onCancel: () => {
+        console.log('Payment cancelled');
+        // Your cancel logic here
+      },
+      onError: (error) => {
+        console.error('Payment error:', error.message);
+        // Your error handling here
+      }
+    });
+  }
+</script>
 </body>
 </html>
